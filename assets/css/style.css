@@ -76,7 +76,7 @@ body.menu-aberto .overlay { display: block; }
 /* FORMULARIOS */
 .campo { margin-bottom: 16px; }
 .campo label { display: block; margin-bottom: 6px; font-weight: 600; }
-input[type=text], input[type=password], input[type=search], input[type=number], select, textarea {
+input[type=text], input[type=password], input[type=search], input[type=number], input[type=tel], select, textarea {
   width: 100%; min-height: 48px; padding: 10px 12px; font-size: 1rem;
   background: var(--preto); color: var(--branco);
   border: 1px solid var(--borda); border-radius: var(--raio);
@@ -112,3 +112,24 @@ input:focus, select:focus, textarea:focus, .btn:focus-visible, .menu-link:focus-
   .grid-atalhos { grid-template-columns: repeat(6, 1fr); }
   .btn-bloco.btn-grande { max-width: 360px; }
 }
+
+/* LISTAS, BUSCA E ACOES (clientes e veiculos) */
+.titulo-pagina { font-size: 1.4rem; margin: 0; }
+.busca-form { margin: 16px 0 8px; }
+.busca { display: flex; gap: 8px; margin-bottom: 8px; }
+.busca input { flex: 1; min-width: 0; }
+.lista { display: grid; gap: 10px; }
+.item-lista { display: block; color: var(--branco); text-decoration: none; }
+.titulo { font-weight: 700; }
+.detalhe { color: var(--cinza-claro); font-size: 0.9rem; margin: 2px 0; }
+.linha-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.selo {
+  display: inline-block; padding: 2px 10px; border-radius: 999px;
+  background: var(--amarelo); color: var(--preto); font-size: 0.78rem; font-weight: 700;
+}
+.selo-inativo { background: transparent; color: var(--cinza-claro); border: 1px solid var(--borda); }
+.botoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.botoes form { margin: 0; }
+.btn-pequeno { min-height: 44px; padding: 8px 14px; font-size: 0.95rem; }
+.btn-perigo { background: transparent; color: var(--amarelo); border-color: var(--amarelo); }
+.paginacao { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 16px; }
