@@ -1,0 +1,135 @@
+/* VARIAVEIS DA IDENTIDADE VISUAL */
+:root {
+  --preto: #171717;
+  --cinza: #383838;
+  --amarelo: #FACC15;
+  --branco: #ffffff;
+  --cinza-claro: #d4d4d4;
+  --raio: 10px;
+  --borda: rgba(212, 212, 212, 0.35);
+}
+
+/* BASE (mobile primeiro) */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--preto);
+  color: var(--branco);
+  line-height: 1.5;
+}
+h1, h2 { margin: 0 0 12px; }
+h2 { font-size: 1.15rem; margin-top: 28px; }
+.texto-suave { color: var(--cinza-claro); font-size: 0.9rem; }
+
+/* CABECALHO E MENU */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 10;
+  display: flex; align-items: center; gap: 8px; padding: 0 8px;
+  background: var(--preto); border-bottom: 1px solid var(--cinza);
+}
+.topbar-titulo { font-weight: 600; }
+.menu-botao {
+  width: 48px; height: 48px; background: none; border: 0;
+  color: var(--amarelo); font-size: 1.7rem; cursor: pointer;
+}
+.sidebar {
+  position: fixed; top: 0; bottom: 0; left: 0; width: 260px; z-index: 30;
+  background: var(--preto); border-right: 1px solid var(--cinza);
+  padding: 16px 12px; overflow-y: auto;
+  transform: translateX(-100%); transition: transform 0.2s;
+}
+body.menu-aberto .sidebar { transform: none; }
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 20; }
+body.menu-aberto .overlay { display: block; }
+.sidebar-marca { color: var(--amarelo); font-size: 1.3rem; font-weight: 700; padding: 8px 12px 20px; }
+.menu-link {
+  display: block; padding: 14px 12px; margin-bottom: 4px;
+  color: var(--cinza-claro); text-decoration: none; border-radius: var(--raio);
+}
+.menu-link.ativo { background: var(--cinza); color: var(--amarelo); font-weight: 600; }
+.sidebar-sair { margin-top: 24px; padding: 0 4px; }
+
+/* CONTEUDO */
+.conteudo { padding: 72px 16px 32px; max-width: 1100px; }
+
+/* CARTOES */
+.card { background: var(--cinza); border-radius: var(--raio); padding: 16px; }
+.grid-indicadores { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.indicador .rotulo { display: block; color: var(--cinza-claro); font-size: 0.85rem; }
+.indicador .valor { display: block; color: var(--amarelo); font-size: 1.6rem; font-weight: 700; }
+.grid-atalhos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.atalho { color: var(--branco); text-decoration: none; text-align: center; font-weight: 600; padding: 20px 12px; }
+
+/* BOTOES (area de toque grande) */
+.btn {
+  display: inline-block; min-height: 48px; padding: 12px 20px;
+  background: var(--cinza); color: var(--branco);
+  border: 1px solid var(--borda); border-radius: var(--raio);
+  font-size: 1rem; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer;
+}
+.btn-primario { background: var(--amarelo); color: var(--preto); border-color: var(--amarelo); }
+.btn-grande { min-height: 56px; font-size: 1.1rem; }
+.btn-bloco { display: block; width: 100%; }
+.desativado { opacity: 0.45; pointer-events: none; }
+
+/* FORMULARIOS */
+.campo { margin-bottom: 16px; }
+.campo label { display: block; margin-bottom: 6px; font-weight: 600; }
+input[type=text], input[type=password], input[type=search], input[type=number], input[type=tel], select, textarea {
+  width: 100%; min-height: 48px; padding: 10px 12px; font-size: 1rem;
+  background: var(--preto); color: var(--branco);
+  border: 1px solid var(--borda); border-radius: var(--raio);
+}
+input:focus, select:focus, textarea:focus, .btn:focus-visible, .menu-link:focus-visible {
+  outline: 2px solid var(--amarelo); outline-offset: 2px;
+}
+
+/* ALERTAS */
+.alerta {
+  background: var(--cinza); border-left: 6px solid var(--amarelo);
+  padding: 12px 14px; border-radius: var(--raio); margin-bottom: 12px;
+}
+.alerta-sucesso::before { content: "Sucesso: "; font-weight: 700; color: var(--amarelo); }
+.alerta-erro::before { content: "Erro: "; font-weight: 700; color: var(--amarelo); }
+.alerta-aviso::before { content: "Atenção: "; font-weight: 700; color: var(--amarelo); }
+
+/* LOGIN */
+.pagina-login { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 16px; }
+.login-caixa { width: 100%; max-width: 380px; padding: 24px; }
+.login-marca { color: var(--amarelo); margin-bottom: 4px; }
+.esqueci { margin-top: 16px; }
+.esqueci summary { cursor: pointer; color: var(--amarelo); padding: 8px 0; }
+
+/* TELAS GRANDES: menu lateral fixo */
+@media (min-width: 900px) {
+  .sidebar { transform: none; }
+  .topbar { left: 260px; }
+  .menu-botao { display: none; }
+  .overlay { display: none !important; }
+  .conteudo { margin-left: 260px; padding: 80px 32px 32px; }
+  .grid-indicadores { grid-template-columns: repeat(4, 1fr); }
+  .grid-atalhos { grid-template-columns: repeat(6, 1fr); }
+  .btn-bloco.btn-grande { max-width: 360px; }
+}
+
+/* LISTAS, BUSCA E ACOES (clientes e veiculos) */
+.titulo-pagina { font-size: 1.4rem; margin: 0; }
+.busca-form { margin: 16px 0 8px; }
+.busca { display: flex; gap: 8px; margin-bottom: 8px; }
+.busca input { flex: 1; min-width: 0; }
+.lista { display: grid; gap: 10px; }
+.item-lista { display: block; color: var(--branco); text-decoration: none; }
+.titulo { font-weight: 700; }
+.detalhe { color: var(--cinza-claro); font-size: 0.9rem; margin: 2px 0; }
+.linha-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.selo {
+  display: inline-block; padding: 2px 10px; border-radius: 999px;
+  background: var(--amarelo); color: var(--preto); font-size: 0.78rem; font-weight: 700;
+}
+.selo-inativo { background: transparent; color: var(--cinza-claro); border: 1px solid var(--borda); }
+.botoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.botoes form { margin: 0; }
+.btn-pequeno { min-height: 44px; padding: 8px 14px; font-size: 0.95rem; }
+.btn-perigo { background: transparent; color: var(--amarelo); border-color: var(--amarelo); }
+.paginacao { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 16px; }
