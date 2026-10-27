@@ -64,6 +64,7 @@ app.set('trust proxy', 1); // Render/Railway ficam atrás de proxy HTTPS
 app.use(helmet({
   contentSecurityPolicy: { useDefaults: true, directives: { 'upgrade-insecure-requests': null } },
 }));
+app.get('/health', (req, res) => res.type('text').send('ok')); // para monitoramento, sem sessão
 app.use(express.urlencoded({ extended: false, limit: '50kb' }));
 app.use((req, res, next) => { req.body = req.body || {}; next(); });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: PROD ? '1d' : 0 }));
@@ -111,12 +112,12 @@ app.get('/login', (req, res) => {
   if (req.session.usuario) return res.redirect('/');
   res.render('login', { titulo: 'Entrar', erro: null });
 });
-app.post('/login', limiteLogin, ah(async (req, res) => {
+app.post('/login', limiteLogin, ah(async (req, res, next) => {
   const u = await Usuario.findOne({ usuario: String(req.body.usuario || '').trim().toLowerCase() });
   const ok = await bcrypt.compare(String(req.body.senha || ''), u ? u.senhaHash : DUMMY_HASH);
   if (!u || !ok) return res.status(401).render('login', { titulo: 'Entrar', erro: 'Usuário ou senha incorretos.' });
   req.session.regenerate((err) => {
-    if (err) throw err;
+    if (err) return next(err);
     req.session.usuario = u.usuario;
     res.redirect('/');
   });

@@ -4,7 +4,7 @@
   <input name="q" value="<%= q %>" placeholder="Buscar por nome, telefone ou placa" type="search">
   <button class="btn">Buscar</button>
 </form>
-<p class="mudo"><label><input type="checkbox" onchange="location.href='/clientes?<%= q ? 'q=' + encodeURIComponent(q) + '&' : '' %>' + (this.checked ? 'inativos=1' : '')" <%= inativos ? 'checked' : '' %>> mostrar inativos</label></p>
+<p class="mudo"><% if (inativos) { %><a href="/clientes<%= q ? '?q=' + encodeURIComponent(q) : '' %>">ocultar inativos</a><% } else { %><a href="/clientes?<%= q ? 'q=' + encodeURIComponent(q) + '&' : '' %>inativos=1">mostrar inativos</a><% } %></p>
 <div class="card lista">
   <% if (!lista.length) { %><p class="mudo">Nenhum cliente encontrado.</p><% } %>
   <% lista.forEach(c => { const s = statusPlano(c); %>

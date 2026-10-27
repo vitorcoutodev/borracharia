@@ -2,7 +2,7 @@
 @media(prefers-color-scheme:dark){:root{--bg:#111827;--card:#1f2937;--txt:#f3f4f6;--mudo:#9ca3af;--borda:#374151}}
 *{box-sizing:border-box}
 body{margin:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt)}
-main{max-width:720px;margin:0 auto;padding:12px 12px 48px}
+main{max-width:960px;margin:0 auto;padding:12px 12px 48px}
 a{color:var(--brand2)}
 h1{font-size:1.4rem;margin:.6em 0 .4em}h2{font-size:1.1rem;margin:1.4em 0 .4em}
 small,.mudo{color:var(--mudo)}
@@ -47,3 +47,5 @@ fieldset{border:1px solid var(--borda);border-radius:10px;margin:10px 0;padding:
 .alerta.ok{background:#dcfce7;color:#14532d}.alerta.erro{background:#fee2e2;color:#7f1d1d}.alerta.aviso{background:#fef3c7;color:#78350f}
 .login{max-width:380px;margin:12vh auto 0}
 .trocar{float:right;font-size:.9rem}
+
+@media(min-width:760px){.grade{grid-template-columns:repeat(4,1fr)}main{padding:20px 20px 60px}}
