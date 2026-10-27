@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#1f2933">
-<title><%= titulo ? titulo + ' · ' : '' %><%= nomeSistema %></title>
+<meta name="theme-color" content="#2b2d31">
+<title><%= titulo ? titulo + ' - ' : '' %><%= nomeSistema %></title>
 <link rel="stylesheet" href="/style.css">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/icon-192.png">
@@ -12,18 +12,27 @@
 <script src="/app.js" defer></script>
 </head>
 <body>
-<% if (usuario) { %>
-<header class="topo">
-  <a class="marca" href="/">🔧 <%= nomeSistema %></a>
-  <nav>
-    <a href="/clientes">Clientes</a>
-    <a href="/atendimentos/novo">Atendimento</a>
-    <a href="/cobrancas">Cobranças</a>
-    <a href="/planos">Planos</a>
-    <a href="/promocao">Promoção</a>
-  </nav>
-  <form method="post" action="/logout"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="sair">Sair</button></form>
+<% if (usuario) { const ativo = (p) => (p === '/' ? rota === '/' : rota.startsWith(p)) ? 'ativo' : ''; %>
+<div class="app">
+<header class="barra">
+  <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <strong><%= nomeSistema %></strong>
 </header>
-<% } %>
+<aside class="menu" id="menu">
+  <a class="marca" href="/"><span class="logo">B</span><span><%= nomeSistema %></span></a>
+  <nav>
+    <a class="<%= ativo('/') %>" href="/">Início</a>
+    <a class="<%= ativo('/clientes') %>" href="/clientes">Clientes</a>
+    <a class="<%= ativo('/atendimentos') %>" href="/atendimentos/novo">Novo atendimento</a>
+    <a class="<%= ativo('/cobrancas') %>" href="/cobrancas">Cobranças</a>
+    <a class="<%= ativo('/planos') %>" href="/planos">Planos</a>
+    <a class="<%= ativo('/promocao') %>" href="/promocao">Promoção</a>
+  </nav>
+  <form method="post" action="/logout" class="sair"><input type="hidden" name="_csrf" value="<%= csrf %>"><span><%= usuario %></span><button>Sair</button></form>
+</aside>
+<div class="fundo" id="fundo"></div>
 <main>
+<% } else { %>
+<main class="solo">
+<% } %>
 <% if (flash) { %><div class="alerta <%= flash.tipo %>" role="alert"><%= flash.texto %></div><% } %>

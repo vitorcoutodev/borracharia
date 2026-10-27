@@ -1,7 +1,7 @@
 <%- include('topo') %>
-<div class="linha"><h1>💰 Cobranças</h1><strong><%= dinheiro(total) %></strong></div>
+<div class="linha"><h1>Cobranças</h1><strong><%= dinheiro(total) %></strong></div>
 <div class="card lista">
-  <% if (!lista.length) { %><p class="mudo">Nenhum valor pendente. 🎉</p><% } %>
+  <% if (!lista.length) { %><p class="mudo">Nenhum valor pendente. </p><% } %>
   <% lista.forEach(a => { if (!a.cliente) return; %>
   <div class="item col">
     <div>

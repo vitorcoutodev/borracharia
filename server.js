@@ -69,6 +69,12 @@ app.use(express.urlencoded({ extended: false, limit: '50kb' }));
 app.use((req, res, next) => { req.body = req.body || {}; next(); });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: PROD ? '1d' : 0 }));
 
+// valores padrão para qualquer tela (a página de erro funciona mesmo se a sessão/banco falhar)
+app.use((req, res, next) => {
+  Object.assign(res.locals, { nomeSistema: NOME, titulo: '', usuario: null, flash: null, csrf: '', rota: req.path, dinheiro, data, waLink, statusPlano });
+  next();
+});
+
 app.use(session({
   name: 'borracharia.sid',
   secret: SESSION_SECRET,
@@ -83,7 +89,7 @@ app.use(session({
 app.use((req, res, next) => {
   if (!req.session.csrf) req.session.csrf = crypto.randomBytes(24).toString('hex');
   Object.assign(res.locals, {
-    csrf: req.session.csrf, nomeSistema: NOME, titulo: '',
+    csrf: req.session.csrf, nomeSistema: NOME, rota: req.path, titulo: '',
     usuario: req.session.usuario || null,
     flash: req.session.flash || null,
     dinheiro, data, waLink, statusPlano,

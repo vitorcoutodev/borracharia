@@ -15,7 +15,7 @@
 
 <% if (pendente > 0) { %><div class="alerta aviso">Valor em aberto: <strong><%= dinheiro(pendente) %></strong></div><% } %>
 
-<h2>📋 Plano</h2>
+<h2>Plano</h2>
 <div class="card">
   <% if (s) { %>
     <p><strong><%= c.plano.plano ? c.plano.plano.nome : 'Plano' %></strong> <span class="tag <%= s.tipo %>"><%= s.tipo === 'vencido' ? 'vencido' : s.tipo === 'vencendo' ? 'vence em ' + s.dias + ' dia(s)' : 'ativo' %></span><br>
@@ -31,7 +31,7 @@
   </form>
 </div>
 
-<h2>🚗 Veículos</h2>
+<h2>Veículos</h2>
 <div class="card lista">
   <% c.veiculos.forEach(v => { %>
   <div class="item"><span><%= v.modelo %> <small><%= v.placa || '' %></small></span>
@@ -45,7 +45,7 @@
   </form>
 </div>
 
-<h2>📜 Histórico</h2>
+<h2>Histórico</h2>
 <div class="card lista">
   <% if (!historico.length) { %><p class="mudo">Nenhum atendimento ainda.</p><% } %>
   <% historico.forEach(a => { %>
