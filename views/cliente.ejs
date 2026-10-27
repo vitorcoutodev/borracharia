@@ -1,0 +1,66 @@
+<%- include('topo') %>
+<% const s = statusPlano(c); %>
+<div class="linha">
+  <h1><%= c.nome %> <% if (!c.ativo) { %><span class="tag cinza">inativo</span><% } %></h1>
+</div>
+<p><%= c.telefone %></p>
+<div class="acoes">
+  <a class="btn" href="/atendimentos/novo?cliente=<%= c._id %>">+ Novo atendimento</a>
+  <a class="btn zap" target="_blank" rel="noopener" href="<%= waLink(c.telefone, 'Olá ' + c.nome + '!') %>">WhatsApp</a>
+  <a class="btn sec" href="/clientes/<%= c._id %>/editar">Editar</a>
+  <form method="post" action="/clientes/<%= c._id %>/ativar" data-confirm="<%= c.ativo ? 'Desativar este cliente?' : 'Reativar este cliente?' %>">
+    <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn sec"><%= c.ativo ? 'Desativar' : 'Reativar' %></button>
+  </form>
+</div>
+
+<% if (pendente > 0) { %><div class="alerta aviso">Valor em aberto: <strong><%= dinheiro(pendente) %></strong></div><% } %>
+
+<h2>📋 Plano</h2>
+<div class="card">
+  <% if (s) { %>
+    <p><strong><%= c.plano.plano ? c.plano.plano.nome : 'Plano' %></strong> <span class="tag <%= s.tipo %>"><%= s.tipo === 'vencido' ? 'vencido' : s.tipo === 'vencendo' ? 'vence em ' + s.dias + ' dia(s)' : 'ativo' %></span><br>
+    <small>Início <%= data(c.plano.inicio) %> · Vencimento <%= data(c.plano.vencimento) %></small></p>
+  <% } else { %><p class="mudo">Sem plano.</p><% } %>
+  <form method="post" action="/clientes/<%= c._id %>/plano" class="linha">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <select name="plano">
+      <option value="">— Sem plano —</option>
+      <% planos.forEach(p => { %><option value="<%= p._id %>" <%= c.plano && c.plano.plano && String(c.plano.plano._id) === String(p._id) ? 'selected' : '' %>><%= p.nome %> (<%= dinheiro(p.preco) %>)</option><% }) %>
+    </select>
+    <button class="btn">Ativar / Renovar</button>
+  </form>
+</div>
+
+<h2>🚗 Veículos</h2>
+<div class="card lista">
+  <% c.veiculos.forEach(v => { %>
+  <div class="item"><span><%= v.modelo %> <small><%= v.placa || '' %></small></span>
+    <form method="post" action="/clientes/<%= c._id %>/veiculos/<%= v._id %>/remover" data-confirm="Remover este veículo?"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn peq sec">Remover</button></form></div>
+  <% }) %>
+  <form method="post" action="/clientes/<%= c._id %>/veiculos" class="linha">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <input name="modelo" placeholder="Modelo" maxlength="80" required>
+    <input name="placa" placeholder="Placa" maxlength="10">
+    <button class="btn peq">Adicionar</button>
+  </form>
+</div>
+
+<h2>📜 Histórico</h2>
+<div class="card lista">
+  <% if (!historico.length) { %><p class="mudo">Nenhum atendimento ainda.</p><% } %>
+  <% historico.forEach(a => { %>
+  <div class="item">
+    <div>
+      <small><%= data(a.createdAt) %><%= a.veiculo ? ' · ' + a.veiculo : '' %></small><br>
+      <strong><%= a.servico %></strong><br>
+      <%= dinheiro(a.valor) %><%= a.forma ? ' · ' + a.forma.toUpperCase() : '' %>
+      <% if (a.obs) { %><br><small><%= a.obs %></small><% } %>
+    </div>
+    <div class="dir">
+      <span class="tag <%= a.pago ? 'ativo' : 'vencido' %>"><%= a.pago ? 'Pago' : 'Pendente' %></span>
+      <% if (!a.pago) { %><a class="btn peq zap" target="_blank" rel="noopener" href="<%= waLink(c.telefone, 'Olá ' + c.nome + ', tudo bem? Passando para lembrar do valor pendente de ' + dinheiro(a.valor) + ' referente a ' + a.servico + ' (' + data(a.createdAt) + '). Qualquer dúvida é só falar!') %>">Cobrar</a><% } %>
+    </div>
+  </div>
+  <% }) %>
+</div>
+<%- include('rodape') %>

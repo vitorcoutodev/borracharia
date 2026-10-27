@@ -1,0 +1,16 @@
+<%- include('topo') %>
+<h1>📢 Divulgar promoção</h1>
+<form class="card" method="get" action="/promocao">
+  <label>Mensagem da promoção <textarea name="msg" rows="4" maxlength="800" placeholder="Digite a mensagem aqui" required><%= msg %></textarea></label>
+  <button class="btn grande">Gerar links</button>
+  <p class="mudo">O WhatsApp abre com a mensagem pronta para cada cliente; é só tocar em enviar. (O envio em massa automático fica para a integração oficial.)</p>
+</form>
+<% if (msg) { %>
+<div class="card lista">
+  <% lista.forEach(c => { %>
+  <div class="item"><span><%= c.nome %> <small><%= c.telefone %></small></span>
+    <a class="btn peq zap" target="_blank" rel="noopener" href="<%= waLink(c.telefone, msg) %>">Enviar</a></div>
+  <% }) %>
+</div>
+<% } %>
+<%- include('rodape') %>

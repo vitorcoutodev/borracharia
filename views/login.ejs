@@ -1,0 +1,13 @@
+<%- include('topo') %>
+<div class="card login">
+  <h1>🔧 <%= nomeSistema %></h1>
+  <% if (erro) { %><div class="alerta erro"><%= erro %></div><% } %>
+  <form method="post" action="/login">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Usuário <input name="usuario" autocomplete="username" autocapitalize="none" required autofocus></label>
+    <label>Senha <input type="password" name="senha" autocomplete="current-password" required></label>
+    <button class="btn grande">Entrar</button>
+  </form>
+  <p class="mudo">Esqueceu a senha? Peça para quem administra o sistema redefinir.</p>
+</div>
+<%- include('rodape') %>

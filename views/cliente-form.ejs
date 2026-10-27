@@ -1,0 +1,17 @@
+<%- include('topo') %>
+<h1><%= c && c._id ? 'Editar cliente' : 'Novo cliente' %></h1>
+<div class="card">
+  <% if (erro) { %><div class="alerta erro"><%= erro %></div><% } %>
+  <form method="post" action="<%= c && c._id ? '/clientes/' + c._id : '/clientes' %>">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Nome <input name="nome" value="<%= c ? c.nome || '' : '' %>" required maxlength="120" autofocus></label>
+    <label>Telefone (com DDD) <input name="telefone" value="<%= c ? c.telefone || '' : '' %>" required maxlength="20" inputmode="tel" placeholder="(51) 99999-1111"></label>
+    <% if (!c || !c._id) { %>
+    <label>Veículo (opcional) <input name="modelo" value="<%= c ? c.modelo || '' : '' %>" maxlength="80" placeholder="Gol 1.6"></label>
+    <label>Placa (opcional) <input name="placa" value="<%= c ? c.placa || '' : '' %>" maxlength="10" placeholder="ABC-1D23"></label>
+    <% } %>
+    <button class="btn grande">Salvar</button>
+    <a class="btn sec grande" href="<%= c && c._id ? '/clientes/' + c._id : '/clientes' %>">Cancelar</a>
+  </form>
+</div>
+<%- include('rodape') %>

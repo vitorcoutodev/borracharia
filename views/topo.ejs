@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1f2933">
+<title><%= titulo ? titulo + ' · ' : '' %><%= nomeSistema %></title>
+<link rel="stylesheet" href="/style.css">
+<script src="/app.js" defer></script>
+</head>
+<body>
+<% if (usuario) { %>
+<header class="topo">
+  <a class="marca" href="/">🔧 <%= nomeSistema %></a>
+  <nav>
+    <a href="/clientes">Clientes</a>
+    <a href="/atendimentos/novo">Atendimento</a>
+    <a href="/cobrancas">Cobranças</a>
+    <a href="/planos">Planos</a>
+    <a href="/promocao">Promoção</a>
+  </nav>
+  <form method="post" action="/logout"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="sair">Sair</button></form>
+</header>
+<% } %>
+<main>
+<% if (flash) { %><div class="alerta <%= flash.tipo %>" role="alert"><%= flash.texto %></div><% } %>

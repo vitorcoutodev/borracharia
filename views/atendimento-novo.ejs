@@ -1,0 +1,47 @@
+<%- include('topo') %>
+<h1>🔧 Novo atendimento</h1>
+<% if (!c) { %>
+<form class="busca" method="get" action="/atendimentos/novo">
+  <input name="q" value="<%= q %>" placeholder="Buscar cliente (nome, telefone ou placa)" type="search" autofocus>
+  <button class="btn">Buscar</button>
+</form>
+<div class="card lista">
+  <% if (!resultados.length) { %><p class="mudo">Nenhum cliente encontrado. <a href="/clientes/novo">Cadastrar novo</a></p><% } %>
+  <% resultados.forEach(r => { %>
+  <a class="item" href="/atendimentos/novo?cliente=<%= r._id %>"><div><strong><%= r.nome %></strong><br><small><%= r.telefone %><%= r.veiculos.length ? ' · ' + r.veiculos.map(v => v.modelo).join(', ') : '' %></small></div><span>›</span></a>
+  <% }) %>
+</div>
+<% } else { const s = statusPlano(c); %>
+<div class="card">
+  <strong><%= c.nome %></strong> · <small><%= c.telefone %></small>
+  <% if (s) { %><br><span class="tag <%= s.tipo %>"><%= c.plano.plano ? c.plano.plano.nome : 'Plano' %> · <%= s.tipo === 'vencido' ? 'vencido' : 'vence ' + data(c.plano.vencimento) %></span><% } %>
+  <a class="trocar" href="/atendimentos/novo">trocar cliente</a>
+</div>
+<div class="card">
+  <% if (erro) { %><div class="alerta erro"><%= erro %></div><% } %>
+  <form method="post" action="/atendimentos">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <input type="hidden" name="cliente" value="<%= c._id %>">
+    <label>Serviço <input name="servico" value="<%= form.servico || '' %>" required maxlength="150" placeholder="Troca de pneus + balanceamento" autofocus></label>
+    <label>Valor (R$) <input name="valor" value="<%= form.valor || '' %>" required inputmode="decimal" placeholder="150,00"></label>
+    <% if (c.veiculos.length) { %>
+    <label>Veículo
+      <select name="veiculo"><option value="">—</option>
+        <% c.veiculos.forEach(v => { const t = v.modelo + (v.placa ? ' ' + v.placa : ''); %><option <%= form.veiculo === t ? 'selected' : '' %>><%= t %></option><% }) %>
+      </select></label>
+    <% } %>
+    <fieldset>
+      <legend>Situação</legend>
+      <label class="op"><input type="radio" name="pago" value="1" <%= form.pago !== '0' ? 'checked' : '' %>> Pago</label>
+      <label class="op"><input type="radio" name="pago" value="0" <%= form.pago === '0' ? 'checked' : '' %>> Pendente</label>
+    </fieldset>
+    <label>Forma de pagamento
+      <select name="forma">
+        <% [['pix','PIX'],['dinheiro','Dinheiro'],['cartao','Cartão'],['outro','Outro']].forEach(([v,t]) => { %><option value="<%= v %>" <%= form.forma === v ? 'selected' : '' %>><%= t %></option><% }) %>
+      </select></label>
+    <label>Observação <input name="obs" value="<%= form.obs || '' %>" maxlength="255"></label>
+    <button class="btn grande">Finalizar atendimento</button>
+  </form>
+</div>
+<% } %>
+<%- include('rodape') %>
