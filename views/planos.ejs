@@ -1,0 +1,15 @@
+<%- include('topo') %>
+<h1>Planos</h1>
+<p class="mudo">Defina nome, valor e benefícios. Todos têm validade de 30 dias. Para ativar um plano, abra o cliente.</p>
+<% planos.forEach(p => { %>
+<div class="card">
+  <form method="post" action="/planos/<%= p._id %>">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Nome <input name="nome" value="<%= p.nome %>" required maxlength="80"></label>
+    <label>Valor (R$) <input name="preco" value="<%= Number(p.preco).toFixed(2).replace('.', ',') %>" inputmode="decimal" required></label>
+    <label>Benefícios <textarea name="beneficios" rows="3" maxlength="500" placeholder="Ex.: 2 balanceamentos + 1 calibragem por mês"><%= p.beneficios %></textarea></label>
+    <div class="linha"><button class="btn">Salvar</button><small class="mudo"><%= ativos[String(p._id)] || 0 %> cliente(s) ativo(s) · validade <%= p.duracaoDias %> dias</small></div>
+  </form>
+</div>
+<% }) %>
+<%- include('rodape') %>

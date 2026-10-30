@@ -1,0 +1,36 @@
+<%- include('topo') %>
+<div class="grade">
+  <a class="stat" href="/clientes"><span><%= clientes %></span>Clientes</a>
+  <a class="stat" href="/atendimentos/novo"><span><%= hoje %></span>Atendimentos hoje</a>
+  <a class="stat" href="/planos"><span><%= planosAtivos %></span>Planos ativos</a>
+  <a class="stat <%= receber > 0 ? 'alerta-stat' : '' %>" href="/cobrancas"><span><%= dinheiro(receber) %></span>A receber</a>
+</div>
+
+<div class="acoes">
+  <a class="btn" href="/clientes/novo">+ Cadastrar cliente</a>
+  <a class="btn" href="/atendimentos/novo">+ Novo atendimento</a>
+  <a class="btn sec" href="/planos">Planos</a>
+  <a class="btn sec" href="/cobrancas">Cobranças</a>
+  <a class="btn sec" href="/clientes">Clientes / Editar</a>
+</div>
+
+<% if (vencendo.length || vencidos.length) { %>
+<h2>Avisos</h2>
+<div class="card lista">
+  <% vencendo.forEach(c => { const s = statusPlano(c); %>
+  <div class="item">
+    <div><a href="/clientes/<%= c._id %>"><strong><%= c.nome %></strong></a><br>
+      <small><%= c.plano.plano ? c.plano.plano.nome : 'Plano' %> vence <%= s.dias === 0 ? 'hoje' : 'em ' + s.dias + ' dia(s)' %> (<%= data(c.plano.vencimento) %>)</small></div>
+    <a class="btn peq zap" target="_blank" rel="noopener" href="<%= waLink(c.telefone, 'Olá ' + c.nome + '! Seu plano na ' + nomeSistema + ' vence em ' + data(c.plano.vencimento) + '. Quer renovar?') %>">WhatsApp</a>
+  </div>
+  <% }) %>
+  <% vencidos.forEach(c => { %>
+  <div class="item">
+    <div><a href="/clientes/<%= c._id %>"><strong><%= c.nome %></strong></a><br>
+      <small class="vermelho">Plano vencido em <%= data(c.plano.vencimento) %></small></div>
+    <a class="btn peq zap" target="_blank" rel="noopener" href="<%= waLink(c.telefone, 'Olá ' + c.nome + '! Seu plano na ' + nomeSistema + ' venceu em ' + data(c.plano.vencimento) + '. Quer renovar?') %>">WhatsApp</a>
+  </div>
+  <% }) %>
+</div>
+<% } %>
+<%- include('rodape') %>
