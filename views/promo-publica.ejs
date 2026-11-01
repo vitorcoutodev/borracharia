@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= nomeSistema %></title>
+<meta property="og:title" content="<%= nomeSistema %>">
+<meta property="og:description" content="<%= promo.texto.slice(0, 150) %>">
+<% if (promo.imagem) { %><meta property="og:image" content="<%= base %>/img/<%= promo.imagem %>"><% } %>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main class="solo"><div class="card login">
+  <img class="logo-login" src="/logo.png" alt="<%= nomeSistema %>">
+  <% if (promo.imagem) { %><img class="prev" src="/img/<%= promo.imagem %>" alt=""><% } %>
+  <p class="pre"><%= promo.texto %></p>
+</div></main>
+</body>
+</html>

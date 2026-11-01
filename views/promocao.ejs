@@ -1,0 +1,15 @@
+<%- include('topo') %>
+<h1>Promoções</h1>
+<form class="card" method="post" action="/promocao?_csrf=<%= csrf %>" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <label>Texto da promoção <textarea name="texto" rows="5" maxlength="1000" required placeholder="Digite a mensagem aqui"></textarea></label>
+  <label>Imagem (opcional)<input type="file" name="imagem" accept="image/*"></label>
+  <button class="btn grande">Criar promoção</button>
+</form>
+<% if (lista.length) { %>
+<h2>Anteriores</h2>
+<div class="card lista">
+  <% lista.forEach(p => { %><a class="item" href="/promocao/<%= p._id %>"><div><strong><%= p.texto.slice(0, 60) %></strong><br><small><%= data(p.createdAt) %></small></div><span>&rsaquo;</span></a><% }) %>
+</div>
+<% } %>
+<%- include('rodape') %>

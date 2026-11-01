@@ -1,0 +1,20 @@
+<%- include('topo') %>
+<div class="linha"><h1>Clientes</h1><a class="btn" href="/clientes/novo">+ Novo</a></div>
+<form class="busca" method="get" action="/clientes">
+  <input name="q" value="<%= q %>" placeholder="Buscar por nome, telefone ou placa" type="search">
+  <button class="btn">Buscar</button>
+</form>
+<p class="mudo"><% if (inativos) { %><a href="/clientes<%= q ? '?q=' + encodeURIComponent(q) : '' %>">ocultar inativos</a><% } else { %><a href="/clientes?<%= q ? 'q=' + encodeURIComponent(q) + '&' : '' %>inativos=1">mostrar inativos</a><% } %></p>
+<div class="card lista">
+  <% if (!lista.length) { %><p class="mudo">Nenhum cliente encontrado.</p><% } %>
+  <% lista.forEach(c => { const s = statusPlano(c); %>
+  <a class="item" href="/clientes/<%= c._id %>">
+    <div>
+      <strong><%= c.nome %></strong> <% if (!c.ativo) { %><span class="tag cinza">inativo</span><% } %><br>
+      <small><%= c.telefone %><% if (c.veiculos.length) { %> · <%= c.veiculos.map(v => v.modelo + (v.placa ? ' ' + v.placa : '')).join(', ') %><% } %></small>
+    </div>
+    <% if (s) { %><span class="tag <%= s.tipo %>"><%= c.plano.plano ? c.plano.plano.nome : 'Plano' %><%= s.tipo === 'vencido' ? ' (vencido)' : '' %></span><% } %>
+  </a>
+  <% }) %>
+</div>
+<%- include('rodape') %>

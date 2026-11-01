@@ -1,0 +1,16 @@
+<%- include('topo') %>
+<h1>Planos</h1>
+<p class="mudo">Cada plano vale por <strong>30 dias</strong>. O cliente só pode usar a quantidade de cada item listada: depois que acaba, o sistema não deixa lançar no plano.</p>
+<% planos.forEach(p => { %>
+<div class="card">
+  <form method="post" action="/planos/<%= p._id %>">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Nome <input name="nome" value="<%= p.nome %>" required maxlength="80"></label>
+    <label>Valor (R$) <input name="preco" value="<%= Number(p.preco).toFixed(2).replace('.', ',') %>" inputmode="decimal" required></label>
+    <label>Itens do plano (um por linha: quantidade e nome)
+      <textarea name="itens" rows="6" placeholder="3 Conserto"><%= itensTexto(p.itens) %></textarea></label>
+    <div class="linha"><button class="btn">Salvar</button><small class="mudo"><%= ativos[String(p._id)] || 0 %> cliente(s) ativo(s)</small></div>
+  </form>
+</div>
+<% }) %>
+<%- include('rodape') %>

@@ -1,0 +1,12 @@
+<%- include('topo') %>
+<div class="card login">
+  <h1>Nova senha</h1>
+  <% if (erro) { %><div class="alerta erro"><%= erro %></div><% } %>
+  <form method="post">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Nova senha (mínimo 10 caracteres) <input type="password" name="senha" minlength="10" autocomplete="new-password" required autofocus></label>
+    <label>Repita a senha <input type="password" name="confirma" minlength="10" autocomplete="new-password" required></label>
+    <button class="btn grande">Salvar senha</button>
+  </form>
+</div>
+<%- include('rodape') %>
