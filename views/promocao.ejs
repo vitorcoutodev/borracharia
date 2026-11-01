@@ -1,16 +1,15 @@
 <%- include('topo') %>
-<h1>Divulgar promoção</h1>
-<form class="card" method="get" action="/promocao">
-  <label>Mensagem da promoção <textarea name="msg" rows="4" maxlength="800" placeholder="Digite a mensagem aqui" required><%= msg %></textarea></label>
-  <button class="btn grande">Gerar links</button>
-  <p class="mudo">O WhatsApp abre com a mensagem pronta para cada cliente; é só tocar em enviar. (O envio em massa automático fica para a integração oficial.)</p>
+<h1>Promoções</h1>
+<form class="card" method="post" action="/promocao?_csrf=<%= csrf %>" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <label>Texto da promoção <textarea name="texto" rows="5" maxlength="1000" required placeholder="Digite a mensagem aqui"></textarea></label>
+  <label>Imagem (opcional)<input type="file" name="imagem" accept="image/*"></label>
+  <button class="btn grande">Criar promoção</button>
 </form>
-<% if (msg) { %>
+<% if (lista.length) { %>
+<h2>Anteriores</h2>
 <div class="card lista">
-  <% lista.forEach(c => { %>
-  <div class="item"><span><%= c.nome %> <small><%= c.telefone %></small></span>
-    <a class="btn peq zap" target="_blank" rel="noopener" href="<%= waLink(c.telefone, msg) %>">Enviar</a></div>
-  <% }) %>
+  <% lista.forEach(p => { %><a class="item" href="/promocao/<%= p._id %>"><div><strong><%= p.texto.slice(0, 60) %></strong><br><small><%= data(p.createdAt) %></small></div><span>&rsaquo;</span></a><% }) %>
 </div>
 <% } %>
 <%- include('rodape') %>

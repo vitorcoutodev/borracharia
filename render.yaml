@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: rogerio-pneus
+    runtime: node
+    plan: free            # troque para starter (US$ 7/mês) para o site não "dormir"
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - { key: NODE_ENV, value: production }
+      - { key: MONGODB_URI, sync: false }
+      - { key: SESSION_SECRET, generateValue: true }
+      - { key: ADMIN_USER, sync: false }
+      - { key: ADMIN_PASS, sync: false }
+      - { key: ADMIN_EMAIL, sync: false }
+      - { key: RESEND_API_KEY, sync: false }
+      - { key: SITE_URL, sync: false }

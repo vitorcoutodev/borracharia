@@ -7,10 +7,10 @@
     <div>
       <a href="/clientes/<%= a.cliente._id %>"><strong><%= a.cliente.nome %></strong></a><br>
       <%= a.servico %><br>
-      <strong><%= dinheiro(a.valor) %></strong> · <small><%= data(a.createdAt) %></small>
+      <strong><%= dinheiro(a.valor) %></strong> · <small><%= data(a.createdAt) %></small><% if (a.venceEm) { %> <span class="tag <%= a.venceEm < new Date() ? 'vencido' : 'vencendo' %>">pagar até <%= data(a.venceEm) %></span><% } %>
     </div>
     <div class="linha">
-      <a class="btn zap" target="_blank" rel="noopener" href="<%= waLink(a.cliente.telefone, 'Olá ' + a.cliente.nome + ', tudo bem? Passando para lembrar do valor pendente de ' + dinheiro(a.valor) + ' referente a ' + a.servico + ' (' + data(a.createdAt) + '). Qualquer dúvida é só falar!') %>">COBRAR</a>
+      <a class="btn zap" target="_blank" rel="noopener" href="<%= waLink(a.cliente.telefone, 'Olá ' + a.cliente.nome + ', tudo bem? Passando para lembrar do valor pendente de ' + dinheiro(a.valor) + ' referente a ' + a.servico + ' (' + data(a.createdAt) + '). Chave PIX (CNPJ): ' + pix + '. Qualquer dúvida é só falar!') %>">COBRAR</a>
       <form method="post" action="/atendimentos/<%= a._id %>/pagar" class="linha" data-confirm="Marcar como pago?">
         <input type="hidden" name="_csrf" value="<%= csrf %>">
         <select name="forma"><option value="pix">PIX</option><option value="dinheiro">Dinheiro</option><option value="cartao">Cartão</option><option value="outro">Outro</option></select>

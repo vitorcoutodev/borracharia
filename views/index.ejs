@@ -3,6 +3,7 @@
   <a class="stat" href="/clientes"><span><%= clientes %></span>Clientes</a>
   <a class="stat" href="/atendimentos/novo"><span><%= hoje %></span>Atendimentos hoje</a>
   <a class="stat" href="/planos"><span><%= planosAtivos %></span>Planos ativos</a>
+  <a class="stat" href="/atendimentos/novo"><span><%= dinheiro(faturado) %></span>Faturado hoje</a>
   <a class="stat <%= receber > 0 ? 'alerta-stat' : '' %>" href="/cobrancas"><span><%= dinheiro(receber) %></span>A receber</a>
 </div>
 
@@ -13,6 +14,18 @@
   <a class="btn sec" href="/cobrancas">Cobranças</a>
   <a class="btn sec" href="/clientes">Clientes / Editar</a>
 </div>
+
+<% if (cobrarHoje.length) { %>
+<h2>Cobrar hoje</h2>
+<div class="card lista">
+  <% cobrarHoje.forEach(a => { if (!a.cliente) return; %>
+  <div class="item">
+    <div><a href="/clientes/<%= a.cliente._id %>"><strong><%= a.cliente.nome %></strong></a><br><small><%= a.servico %> - <%= dinheiro(a.valor) %> - combinado para <%= data(a.venceEm) %></small></div>
+    <a class="btn peq zap" target="_blank" rel="noopener" href="<%= waLink(a.cliente.telefone, 'Olá ' + a.cliente.nome + ', tudo bem? Hoje é o dia combinado para o pagamento de ' + dinheiro(a.valor) + ' referente a ' + a.servico + '. Chave PIX (CNPJ): ' + pix + '. Obrigado!') %>">Cobrar</a>
+  </div>
+  <% }) %>
+</div>
+<% } %>
 
 <% if (vencendo.length || vencidos.length) { %>
 <h2>Avisos</h2>

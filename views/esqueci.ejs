@@ -1,0 +1,12 @@
+<%- include('topo') %>
+<div class="card login">
+  <h1>Esqueci a senha</h1>
+  <p class="mudo">Informe o usuário. Se ele existir, enviamos um link para o e-mail cadastrado.</p>
+  <form method="post" action="/esqueci">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Usuário <input name="usuario" autocapitalize="none" required autofocus></label>
+    <button class="btn grande">Enviar link</button>
+    <a class="btn sec grande" href="/login">Voltar</a>
+  </form>
+</div>
+<%- include('rodape') %>

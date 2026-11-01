@@ -19,11 +19,17 @@
 </div>
 <div class="card">
   <% if (erro) { %><div class="alerta erro"><%= erro %></div><% } %>
-  <form method="post" action="/atendimentos">
+  <form method="post" action="/atendimentos?_csrf=<%= csrf %>" enctype="multipart/form-data">
     <input type="hidden" name="_csrf" value="<%= csrf %>">
     <input type="hidden" name="cliente" value="<%= c._id %>">
-    <label>Serviço <input name="servico" value="<%= form.servico || '' %>" required maxlength="150" placeholder="Troca de pneus + balanceamento" autofocus></label>
-    <label>Valor (R$) <input name="valor" value="<%= form.valor || '' %>" required inputmode="decimal" placeholder="150,00"></label>
+    <label>Serviço <input name="servico" value="<%= form.servico || '' %>" maxlength="150" placeholder="Troca de pneus + balanceamento" autofocus></label>
+    <label>Valor (R$) <input name="valor" value="<%= form.valor || '' %>" inputmode="decimal" placeholder="150,00"></label>
+    <% if (saldo && saldo.some(i => i.resta > 0)) { %>
+    <label>Usar saldo do plano
+      <select name="uso"><option value="">Não (cobrar normalmente)</option>
+        <% saldo.filter(i => i.resta > 0).forEach(i => { %><option value="<%= i.nome %>" <%= form.uso === i.nome ? 'selected' : '' %>><%= i.nome %> (restam <%= i.resta %>)</option><% }) %>
+      </select></label>
+    <% } else if (s) { %><p class="mudo">Sem saldo disponível no plano. O atendimento será cobrado normalmente.</p><% } %>
     <% if (c.veiculos.length) { %>
     <label>Veículo
       <select name="veiculo"><option value="">—</option>
@@ -35,10 +41,12 @@
       <label class="op"><input type="radio" name="pago" value="1" <%= form.pago !== '0' ? 'checked' : '' %>> Pago</label>
       <label class="op"><input type="radio" name="pago" value="0" <%= form.pago === '0' ? 'checked' : '' %>> Pendente</label>
     </fieldset>
+    <label>Pagar até (se ficou pendente)<input type="date" name="venceEm" value="<%= form.venceEm || '' %>"></label>
     <label>Forma de pagamento
       <select name="forma">
         <% [['pix','PIX'],['dinheiro','Dinheiro'],['cartao','Cartão'],['outro','Outro']].forEach(([v,t]) => { %><option value="<%= v %>" <%= form.forma === v ? 'selected' : '' %>><%= t %></option><% }) %>
       </select></label>
+    <label>Foto do serviço (opcional)<input type="file" name="foto" accept="image/*"></label>
     <label>Observação <input name="obs" value="<%= form.obs || '' %>" maxlength="255"></label>
     <button class="btn grande">Finalizar atendimento</button>
   </form>

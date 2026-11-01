@@ -1,6 +1,6 @@
 <%- include('topo') %>
 <div class="card login">
-  <h1><%= nomeSistema %></h1>
+  <img class="logo-login" src="/logo.png" alt=""><h1><%= nomeSistema %></h1><p class="mudo"><%= subtitulo %></p>
   <% if (erro) { %><div class="alerta erro"><%= erro %></div><% } %>
   <form method="post" action="/login">
     <input type="hidden" name="_csrf" value="<%= csrf %>">
@@ -8,6 +8,6 @@
     <label>Senha <input type="password" name="senha" autocomplete="current-password" required></label>
     <button class="btn grande">Entrar</button>
   </form>
-  <p class="mudo">Esqueceu a senha? Peça para quem administra o sistema redefinir.</p>
+  <p><a href="/esqueci">Esqueci minha senha</a></p>
 </div>
 <%- include('rodape') %>
